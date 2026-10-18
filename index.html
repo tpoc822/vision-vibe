@@ -3,12 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyFlow</title>
+  <title>StudyFlow — 학습 일정 관리</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header><h1>StudyFlow — 학습 일정 관리</h1><p>기능은 계획서 3단계에서 구현합니다. (GitHub Pages · Vercel 자동 배포 확인 완료)</p></header>
-  <main id="app"></main>
+  <!-- 상단: 제목 · 뷰 전환 탭 · 새 할 일 버튼 -->
+  <header class="topbar">
+    <div class="brand">
+      <h1>StudyFlow</h1>
+      <span class="tagline">나만의 학습 일정 관리</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="보기 전환">
+      <button class="tab is-active" type="button" role="tab" data-view="list" aria-selected="true">목록</button>
+      <button class="tab" type="button" role="tab" data-view="board" aria-selected="false">칸반</button>
+      <button class="tab" type="button" role="tab" data-view="calendar" aria-selected="false">캘린더</button>
+    </nav>
+    <button id="btn-new" class="btn btn-primary" type="button">+ 새 할 일</button>
+  </header>
+
+  <!-- 검색 · 필터 줄 (기능 4) -->
+  <section class="toolbar" aria-label="검색과 필터">
+    <input id="search" type="search" placeholder="제목 검색" aria-label="제목 검색">
+    <select id="filter-subject" aria-label="과목 필터"><option value="">모든 과목</option></select>
+    <select id="filter-priority" aria-label="우선순위 필터">
+      <option value="">모든 우선순위</option>
+      <option value="high">높음</option>
+      <option value="normal">보통</option>
+      <option value="low">낮음</option>
+    </select>
+    <select id="filter-status" aria-label="상태 필터">
+      <option value="">모든 상태</option>
+      <option value="todo">할 일</option>
+      <option value="doing">진행 중</option>
+      <option value="done">완료</option>
+    </select>
+    <label class="check"><input id="filter-overdue" type="checkbox"> 기한 초과만</label>
+    <span id="summary" class="summary" aria-live="polite"></span>
+  </section>
+
+  <!-- 세 가지 뷰 -->
+  <main id="app">
+    <section id="view-list" class="view" aria-label="목록 보기"></section>
+    <section id="view-board" class="view" aria-label="칸반 보기" hidden></section>
+    <section id="view-calendar" class="view" aria-label="캘린더 보기" hidden></section>
+  </main>
+
+  <!-- 할 일 입력·수정 창 (기능 1) -->
+  <dialog id="task-dialog" aria-labelledby="dialog-title">
+    <form id="task-form" method="dialog" novalidate>
+      <h2 id="dialog-title">새 할 일</h2>
+      <label>제목 <span class="req">*</span>
+        <input name="title" type="text" maxlength="80" required placeholder="예: 운영체제 3장 복습">
+      </label>
+      <div class="row">
+        <label>과목/분류
+          <input name="subject" type="text" maxlength="30" list="subject-list" placeholder="예: 운영체제">
+          <datalist id="subject-list"></datalist>
+        </label>
+        <label>마감일
+          <input name="due" type="date">
+        </label>
+      </div>
+      <div class="row">
+        <label>우선순위
+          <select name="priority">
+            <option value="high">높음</option>
+            <option value="normal" selected>보통</option>
+            <option value="low">낮음</option>
+          </select>
+        </label>
+        <label>상태
+          <select name="status">
+            <option value="todo" selected>할 일</option>
+            <option value="doing">진행 중</option>
+            <option value="done">완료</option>
+          </select>
+        </label>
+      </div>
+      <label>메모
+        <textarea name="memo" rows="3" maxlength="500" placeholder="세부 내용, 범위, 링크 등"></textarea>
+      </label>
+      <p class="form-error" id="form-error" hidden>제목을 입력해 주세요.</p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-danger" id="btn-delete" hidden>삭제</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn" id="btn-cancel">취소</button>
+        <button type="submit" class="btn btn-primary" id="btn-save">저장</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="js/app.js"></script>
 </body>
 </html>
