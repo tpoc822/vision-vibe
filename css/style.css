@@ -1,0 +1,5 @@
+/* css/style.css — StudyFlow 전체 스타일 (3단계에서 채움) */
+body { font-family: "Malgun Gothic", sans-serif; margin: 0; background: #f7f7f5; color: #222; }
+header { padding: 40px 48px 24px; }
+header h1 { margin: 0 0 8px; font-size: 36px; }
+header p { margin: 0; color: #666; }
